@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Games App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .game {
+            display: none;
+        }
+
+        .game.active {
+            display: block;
+        }
+
+        #otpDisplay, #rpsResult, #diceResult {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mini Games App</h1>
+        <div class="nav">
+            <button onclick="showGame('otp')">OTP Generator</button>
+            <button onclick="showGame('rps')">Rock Paper Scissor</button>
+            <button onclick="showGame('dice')">Dice Roll</button>
+        </div>
+        <div id="games">
+            <!-- OTP Generator -->
+            <div id="otp" class="game active">
+                <h2>OTP Generator</h2>
+                <button id="generateOtpBtn" onclick="generateOTP()">Generate OTP</button>
+                <p id="otpDisplay">Your OTP will appear here</p>
+            </div>
+
+            <!-- Rock Paper Scissor -->
+            <div id="rps" class="game">
+                <h2>Rock Paper Scissor</h2>
+                <div class="choices">
+                    <button class="choice" data-choice="rock" onclick="playRPS(event)">Rock</button>
+                    <button class="choice" data-choice="paper" onclick="playRPS(event)">Paper</button>
+                    <button class="choice" data-choice="scissors" onclick="playRPS(event)">Scissors</button>
+                </div>
+                <p id="rpsResult">Make a choice to start the game!</p>
+            </div>
+
+            <!-- Dice Roll -->
+            <div id="dice" class="game">
+                <h2>Dice Roll</h2>
+                <button id="rollDiceBtn" onclick="rollDice()">Roll Dice</button>
+                <div id="diceResult">Roll the dice to see the result!</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function generateOTP() {
+            const otpDisplay = document.getElementById('otpDisplay');
+            const otp = Math.floor(100000 + Math.random() * 900000);
+            otpDisplay.textContent = `Your OTP is: ${otp}`;
+        }
+
+        function playRPS(event) {
+            const userChoice = event.target.dataset.choice;
+            const choices = ['rock', 'paper', 'scissors'];
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+            let result = '';
+
+            if (userChoice === computerChoice) {
+                result = 'It\'s a draw!';
+            } else if (
+                (userChoice === 'rock' && computerChoice === 'scissors') ||
+                (userChoice === 'scissors' && computerChoice === 'paper') ||
+                (userChoice === 'paper' && computerChoice === 'rock')
+            ) {
+                result = 'You win!';
+            } else {
+                result = 'You lose!';
+            }
+
+            const rpsResult = document.getElementById('rpsResult');
+            rpsResult.textContent = `You chose ${userChoice}, computer chose ${computerChoice}. ${result}`;
+        }
+
+        function rollDice() {
+            const dice = Math.floor(Math.random() * 6) + 1;
+            const diceResult = document.getElementById('diceResult');
+            diceResult.textContent = `You rolled a ${dice}`;
+        }
+
+        function showGame(game) {
+            const games = document.querySelectorAll('.game');
+            games.forEach(g => g.style.display = 'none');
+            document.getElementById(game).style.display = 'block';
+        }
+    </script>
+</body>
+</html>
